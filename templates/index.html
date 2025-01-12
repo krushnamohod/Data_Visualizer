@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analysis Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/plotly.js/2.27.0/plotly.min.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="min-h-screen">
+        <!-- Upload Section -->
+        <div id="upload-section" class="container mx-auto px-4 py-8">
+            <div class="bg-white rounded-lg shadow-lg p-6">
+                <h1 class="text-2xl font-bold mb-4">Knowledge Insight</h1>
+                <div class="text-center p-6">
+                    <div id="upload-status" class="text-green-500 mb-4 hidden">
+                        Data uploaded successfully
+                    </div>
+                    <form id="upload-form" class="space-y-4">
+                        <input 
+                            type="file" 
+                            id="file-input" 
+                            accept=".csv"
+                            class="hidden"
+                        >
+                        <label 
+                            for="file-input"
+                            class="bg-blue-500 text-white px-6 py-3 rounded-lg cursor-pointer hover:bg-blue-600 inline-block"
+                        >
+                            Upload CSV File
+                        </label>
+                        <div class="text-sm text-gray-500">
+                            Maximum file size: 100MB
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dashboard Section -->
+        <div id="dashboard-section" class="container mx-auto px-4 py-8 hidden">
+            <div class="grid grid-cols-3 gap-6">
+                <!-- Visualization Panel -->
+                <div class="col-span-2">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-4">Visualizations</h2>
+                        <div id="visualization-container">
+                            <!-- Visualization options will be added here -->
+                            <button 
+                                class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300"
+                                onclick="dashboard.addVisualization()"
+                            >
+                                + Add Visualization
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Assistant Panel -->
+                <div class="col-span-1">
+                    <div class="bg-white rounded-lg shadow-lg p-6">
+                        <h2 class="text-xl font-bold mb-4">AI Assistant</h2>
+                        <div class="space-y-4">
+                            <div id="ai-chat" class="h-96 overflow-y-auto border rounded-lg p-4"></div>
+                            <div class="flex space-x-2">
+                                <input 
+                                    type="text" 
+                                    id="ai-input" 
+                                    class="flex-1 border rounded-lg px-4 py-2"
+                                    placeholder="Ask about your data..."
+                                >
+                                <button 
+                                    id="ai-submit"
+                                    class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                                >
+                                    Ask
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+</body>
+</html>
