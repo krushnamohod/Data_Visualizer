@@ -1,39 +1,62 @@
-from dotenv import load_dotenv
 import os
+from dotenv import load_dotenv
 import google.generativeai as genai
 from datetime import datetime
 
-# Load environment variables
+# Load environment variables from .env file
 load_dotenv()
 
 class DataChatBot:
+    """
+    A chatbot designed to assist with data analysis. It uses Google Generative AI to process 
+    queries and provide insights based on a dataset.
+    """
+
     def __init__(self):
+        # Fetch the Google API key from environment variables
         api_key = os.getenv('GOOGLE_API_KEY')
         if not api_key:
             raise ValueError("Google API key not found in environment variables")
         
+        # Configure the generative AI model with the API key
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
-        self.dataset_info = None
-        self.chat_history = []
+        self.model = genai.GenerativeModel('gemini-pro')  # Specify the model to use
+        self.dataset_info = None  # Placeholder for dataset information
+        self.chat_history = []  # List to store chat history
 
     def set_dataset_info(self, df):
-        """Store dataset information for context"""
+        """
+        Store essential information about the dataset for context.
+        
+        Args:
+            df (pd.DataFrame): The dataset to analyze.
+        """
         self.dataset_info = {
-            'shape': df.shape,
-            'columns': list(df.columns),
-            'dtypes': df.dtypes.to_dict(),
-            'numeric_columns': list(df.select_dtypes(include=['float64', 'int64']).columns),
-            'categorical_columns': list(df.select_dtypes(include=['object']).columns),
-            'sample_data': df.head(5).to_dict()
+            'shape': df.shape,  # Dimensions of the dataset (rows, columns)
+            'columns': list(df.columns),  # List of column names
+            'dtypes': df.dtypes.to_dict(),  # Data types of each column
+            'numeric_columns': list(df.select_dtypes(include=['float64', 'int64']).columns),  # Numeric columns
+            'categorical_columns': list(df.select_dtypes(include=['object']).columns),  # Categorical columns
+            'sample_data': df.head(5).to_dict()  # First 5 rows as a dictionary
         }
 
     def get_chat_history(self):
-        """Return the chat history"""
+        """
+        Return the conversation history between the user and the assistant.
+        
+        Returns:
+            list: Chat history with timestamps.
+        """
         return self.chat_history
 
     def _add_to_history(self, role, content):
-        """Add message to chat history with timestamp"""
+        """
+        Add a message to the chat history with a timestamp.
+        
+        Args:
+            role (str): 'user' or 'assistant', indicating who sent the message.
+            content (str): The content of the message.
+        """
         self.chat_history.append({
             'role': role,
             'content': content,
@@ -41,10 +64,16 @@ class DataChatBot:
         })
 
     def generate_initial_insights(self):
-        """Generate initial insights about the dataset"""
+        """
+        Generate initial insights about the dataset.
+        
+        Returns:
+            str: Insights about the dataset's structure, key columns, and suggested visualizations.
+        """
         if not self.dataset_info:
             return "No dataset information available."
 
+        # Construct a prompt with dataset details
         prompt = f"""As a data analysis assistant, provide a concise initial analysis of this dataset:
         
         Dataset Overview:
@@ -61,22 +90,31 @@ class DataChatBot:
         3. Suggested visualizations that might be insightful
         """
 
+        # Generate content using the AI model
         response = self.model.generate_content(prompt)
         insight = response.text
         
-        # Add to chat history
+        # Add the assistant's response to chat history
         self._add_to_history('assistant', 'Initial Dataset Analysis:\n' + insight)
         return insight
 
     def process_query(self, query):
-        """Process user query about the data"""
+        """
+        Process a user query related to the dataset and return a response.
+        
+        Args:
+            query (str): The user's question or request.
+        
+        Returns:
+            str: AI-generated response to the user's query.
+        """
         if not self.dataset_info:
             return "Please upload a dataset first."
 
-        # Add user query to history
+        # Add the user's query to the chat history
         self._add_to_history('user', query)
 
-        # Prepare context for the AI
+        # Construct a prompt with the dataset context and user query
         context = f"""You are a data analysis assistant helping with a dataset that has the following structure:
         
         Dataset Info:
@@ -92,18 +130,28 @@ class DataChatBot:
         3. Uses the actual column names from the dataset
         """
 
+        # Generate content using the AI model
         response = self.model.generate_content(context)
         answer = response.text
         
-        # Add assistant's response to history
+        # Add the assistant's response to chat history
         self._add_to_history('assistant', answer)
         return answer
 
     def suggest_visualization(self, columns=None):
-        """Suggest appropriate visualizations based on selected columns"""
+        """
+        Suggest visualizations based on the selected columns or entire dataset.
+        
+        Args:
+            columns (list, optional): List of columns to consider for visualization. Defaults to all columns.
+        
+        Returns:
+            str: Suggested visualization types and ideas.
+        """
         if not columns:
-            columns = self.dataset_info['columns']
+            columns = self.dataset_info['columns']  # Default to all columns if none are specified
 
+        # Construct a prompt to suggest visualizations
         prompt = f"""Given these columns: {columns}
         Suggest appropriate visualization types considering:
         - Column data types
@@ -112,5 +160,6 @@ class DataChatBot:
         
         Provide specific suggestions using the actual column names."""
 
+        # Generate content using the AI model
         response = self.model.generate_content(prompt)
         return response.text
