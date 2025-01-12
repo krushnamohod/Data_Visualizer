@@ -15,7 +15,7 @@ chatbot = DataChatBot()
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('dashboard.html')
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
