@@ -50,7 +50,7 @@ The **Visualization Dashboard** will provide users with a seamless interface to:
 ---
 
 ### 👨‍💻 **Contributors**  
-This project is being actively developed by [Your Team's Name/Developer Names].  
+This project is being actively developed by Cognitive Developers.
 
 ---
 
