@@ -7,7 +7,7 @@ from chatsection import DataChatBot
 from statisticsanalysis import DataAnalyzer
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 100MB max file size
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Initialize chatbot
@@ -15,6 +15,10 @@ chatbot = DataChatBot()
 
 @app.route('/')
 def index():
+    return render_template('landing.html')
+
+@app.route('/dashboard')
+def dashboard():
     return render_template('dashboard.html')
 
 @app.route('/upload', methods=['POST'])
@@ -79,7 +83,10 @@ def create_visualization():
         'scatter': visualizer.create_scatter,
         'correlation': visualizer.create_correlation_heatmap,
         'bar': visualizer.create_bar_plot,
-        'line': visualizer.create_line_plot
+        'line': visualizer.create_line_plot,
+        'pie': visualizer.create_pie_chart,
+        'violin': visualizer.create_violin,
+        'QQ': visualizer.create_QQ
     }
 
     if plot_type not in plot_functions:
@@ -147,4 +154,4 @@ def chat_query():
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", threaded=True)

@@ -47,7 +47,6 @@ class DataVisualizer:
         """Create correlation heatmap for numerical columns"""
         numeric_df = self.df.select_dtypes(include=['float64', 'int64'])
         corr_matrix = numeric_df.corr()
-        
         fig, ax = plt.subplots(figsize=(12, 8))
         sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', center=0, ax=ax)
         ax.set_title('Correlation Heatmap')
@@ -70,6 +69,28 @@ class DataVisualizer:
         ax.set_title(f'Line Plot: {y_column} over {x_column}')
         return self.get_plot_as_base64(fig)
 
+    def create_pie_chart(self, column):
+        """Create pie chart for categorical data"""
+        value_counts = self.df[column].value_counts()
+        fig, ax = plt.subplots(figsize=(6, 6))
+        plt.pie(value_counts.values, labels=value_counts.index, autopct='%1.1f%%')
+        ax.set_title(f'Pie Chart of {column}')
+        return self.get_plot_as_base64(fig)
+    
+    def create_violin(self, column):
+        """Create violin plot for numerical data"""
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.violinplot(data=self.df, y=column, ax=ax)
+        ax.set_title(f'Violin Plot of {column}')
+        return self.get_plot_as_base64(fig)
+    
+    def create_QQ(self, column):
+        """Create QQ plot for numerical data"""
+        fig, ax = plt.subplots(figsize=(10, 6))
+        sns.qqplot(self.df[column], line='45', ax=ax)
+        ax.set_title(f'QQ Plot of {column}')
+        return self.get_plot_as_base64(fig)
+    
     def get_available_plots(self):
         """Return available plot types based on data types"""
         numeric_columns = self.df.select_dtypes(include=['float64', 'int64']).columns
@@ -81,6 +102,9 @@ class DataVisualizer:
             'scatter': list(numeric_columns),
             'bar': list(categorical_columns),
             'line': list(numeric_columns),
+            'pie': list(categorical_columns),
+            'violin': list(numeric_columns),
+            'QQ': list(numeric_columns),
             'correlation': 'Available' if len(numeric_columns) > 1 else 'Not Available'
         }
         return available_plots
