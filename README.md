@@ -1,60 +1,118 @@
-# 🚧 Visualization Dashboard (Work in Progress) 🚧  
+# 🌟 Visualization Dashboard 🌟  
 
-Welcome to the **Visualization Dashboard** repository!  
-
-## 📢 **Project Status**  
-This project is currently under development. We are actively working to build an intuitive and professional dashboard that empowers users to:  
-1. Upload datasets (drag-and-drop supported).  
-2. Perform **visualization** of the data through various charts (e.g., histograms, line plots, correlation matrices, etc.).  
-3. Conduct **statistical analysis** such as mean, median, mode, and more.  
-
-Stay tuned for updates and new features! 🚀  
+Welcome to the **Visualization Dashboard**! This project provides an intuitive and professional platform for uploading datasets, performing data visualizations, conducting statistical analysis, and leveraging AI-powered insights.  
 
 ---
 
-## 📋 **Project Overview**  
-
-The **Visualization Dashboard** will provide users with a seamless interface to:  
+## 🚀 **Features**  
 
 1. **Upload Datasets:**  
-   - Users can upload datasets up to **100 MB** in size.  
-   - The dashboard will process the dataset and offer intelligent insights.  
+   - Drag-and-drop functionality for datasets up to **100 MB**.  
 
-2. **AI-Generated Dataset Insights:**  
-   - Using advanced AI tools, the system will analyze the dataset and generate a summary of its structure:  
-     - Number and types of columns (e.g., categorical, integer, datetime).  
-     - Basic observations based on the data's properties.  
+2. **Data Visualization:**  
+   - Generate visualizations such as histograms, line plots, correlation matrices, and more.  
 
-3. **Interactive Dashboard Features:**  
-   - Users can add tiles to:  
-     - Visualize data through customizable charts.  
-     - Perform statistical computations and view results.  
+3. **Statistical Analysis:**  
+   - Perform calculations like mean, median, mode, and other insights directly on the dashboard.  
 
-4. **Google Gemini AI Integration:**  
-   - The assistant will offer real-time explanations and context-aware insights about the dataset and generated outputs.  
+4. **AI-Powered Assistance:**  
+   - Integrated with Google Gemini AI for dataset insights and real-time explanations.  
 
 ---
 
-## 🛠️ **Technology Stack**  
-- **Backend:** Flask  
-- **Frontend:** HTML, CSS, JavaScript  
-- **AI:** Google Gemini API  
+## 🛠️ **Installation Instructions**  
+
+### Clone the Repository  
+Clone this repository to your local machine:  
+```bash  
+git clone https://github.com/krushnamohod/Data_Visualizer.git  
+cd visualization-dashboard
+```
+### Create virtual environment 
+paste in your command line
+```bash
+python -m venv venv  
+source venv/bin/activate  # On Linux/Mac  
+venv\Scripts\activate     # On Windows  
+```
+### Install Dependencies
+paste in your command line 
+```bash
+pip install -r requirements.txt  
+```
+
+### Generate API Key
+Follow this link to generate a Google Gemini API key:
+**[Google AI Studio - Generate API Key](https://aistudio.google.com/prompts/new_chat)** 
+
+###  Configure the .env File
+After generating the API key
+Add your API key to the .env file in the root of the project directory:
+```bash
+GOOGLE_API_KEY="YOUR_API_KEY" 
+```
+---
+## 📁 File Structure
+```markdown
+visualization-dashboard/  
+├── datasets/  
+├── static/  
+│   ├── js/  
+│   │   ├── chat.js  
+│   │   ├── dashboard.js  
+│   │   └── main.js  
+│   ├── styles/  
+│   │   ├── main.css  
+│   │   └── styles.css  
+├── templates/  
+│   ├── dashboard.html  
+│   └── landing.html  
+├── uploads/  
+│   └── food_impact_india_1.csv  
+├── app.py  
+├── chatsection.py  
+├── statisticsanalysis.py  
+├── visualize.py  
+├── .env  
+├── .gitignore  
+├── requirements.txt  
+├── README.md  
+```
+---
+## ⚙️ How to Run the Project
+1. Activate your Virtual environment
+```bash
+source venv/bin/activate  # On Linux/Mac  
+venv\Scripts\activate     # On Windows  
+```
+2. Start the Flask server:
+```bash
+python app.py  
+```
+3. Open your browser and navigate to:
+```arduino
+http://127.0.0.1:5000  
+```
+or your machine IP address appearing on your command line 
 
 ---
-
-## 🔗 **Future Plans**  
-- Add support for additional chart types and statistical methods.  
-- Implement a responsive and industry-standard design.  
-- Enhance AI capabilities for better dataset understanding.  
+## 📝 Notes
+Make sure your <span style="background-color: grey">.env</span> file contains the correct API key for the AI integration.
+For any additional dependencies or updates, modify the requirements.txt file and reinstall using <span style="background-color: grey">pip install -r requirements.txt</span>
 
 ---
-
-### 👨‍💻 **Contributors**  
-This project is being actively developed by Cognitive Developers.
+## 🛠️ Technology Stack
+Backend: Flask
+Frontend: HTML, CSS, JavaScript
 
 ---
+## 👨‍💻 Contributors
+This project is developed by Cognitive Developers.
 
-### ⚠️ **Note to Visitors**  
-As this project is a **work in progress**, certain features may not be fully implemented or functional yet. We appreciate your patience and support as we continue building and improving this tool.  
+Feel free to star 🌟 this repository and provide feedback or suggestions!
 
-Feel free to **star** 🌟 the repository to stay updated on our progress!  
+```vbnet
+
+Let me know if there’s anything else you’d like to change! 🚀
+```   
+---
