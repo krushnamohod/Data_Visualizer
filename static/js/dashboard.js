@@ -136,6 +136,9 @@ class Dashboard {
                                 <option value="correlation">Correlation Heatmap</option>
                                 <option value="bar">Bar Chart</option>
                                 <option value="line">Line Plot</option>
+                                <option value="pie">Pie Chart</option>
+                                <option value="Violin">Violin Plot</option>
+                                <option value="Q-Q">Q-Q Plot</option>
                             </select>
                             <div id="column-select-container" class="hidden"></div>
                             <button type="button" id="create-visualization" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full hover:bg-blue-600">
@@ -179,6 +182,15 @@ class Dashboard {
             case 'correlation':
                 container.innerHTML = '<p class="text-gray-600">Using all numeric columns</p>';
                 break;
+            case 'pie':
+                this.addColumnSelect(container, 'column', 'Select Column', this.columns.categorical);
+                break;
+            case 'Violin':
+                this.addColumnSelect(container, 'column', 'Select Column', this.columns.numeric);
+                break;
+            case 'Q-Q':
+                this.addColumnSelect(container, 'column', 'Select Column', this.columns.numeric);
+                break;
         }
     }
 
@@ -198,7 +210,7 @@ class Dashboard {
         const plotType = modal.querySelector('#plot-type').value;
         const params = { plot_type: plotType, params: {} };
 
-        if (['histogram', 'boxplot', 'bar'].includes(plotType)) {
+        if (['histogram', 'boxplot', 'bar', 'pie', 'Violin', 'Q-Q'].includes(plotType)) {
             params.params.column = modal.querySelector('#column').value;
         } else if (['scatter', 'line'].includes(plotType)) {
             params.params.x_column = modal.querySelector('#x-column').value;
