@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data to Insights</title>
+    <link rel="stylesheet" href="static\styles\main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+</head>
+<body>
+    <div class="logo-container">
+        <div class="logo"></div>
+    </div>
+    <div class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Data to <span class="highlight">Visuals</span> in Clicks</h1>
+            <p>Explore your data, build your dashboard,<br>bring your team together.</p>
+            <button class="cta-button" onclick="window.location.href='/dashboard'">Get Started</button>
+
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="dashboard">
+            <div class="grid-container">
+                <div class="card user-signups">
+                    <h3>Line Plot</h3>
+                    <div class="chart-container">
+                        <canvas id="signupsChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card revenue-by-city">
+                    <h3>Pie Chart</h3>
+                    <div class="chart-container">
+                        <canvas id="revenueChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card orders-by-city">
+                    <h3>Bar Graph</h3>
+                    <div class="chart-container">
+                        <canvas id="ordersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team Section -->
+        <section class="team-section">
+            <div class="teamfevicon"><h2> Team <span class="highlight"> Cognitive </span>Developers</h2></div>
+            <p class="team-tagline">A group of passionate individuals driving insights to action.</p>
+            <div class="team-grid">
+                <div class="team-card hidden">
+                    <div class="profile-pic">
+                        <img src="images\krushna.png">
+                    </div>
+                    <h3>Krushna Mohod</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/krushna-mohod-5076a128a/" target="_blank">
+                            <img src="images\linkedin-logo.png" alt="LinkedIn logo">
+                        </a>
+                        <a href="https://github.com/krushnamohod" target="_blank">
+                            <img src="images\github-logo.png" alt="GitHub logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="team-card hidden">
+                    <div class="profile-pic">
+                        <img src="images\hirek.png">
+                    </div>
+                    <h3>Hirek Warhekar</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/hirek-warhekar-5a1b14290/" target="_blank">
+                            <img src="images\linkedin-logo.png" alt="LinkedIn logo">
+                        </a>
+                        <a href="https://github.com/hirek18" target="_blank">
+                            <img src="images\github-logo.png" alt="GitHub logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="team-card hidden">
+                    <div class="profile-pic">
+                        <img src="images\sharvil.png">
+                    </div>
+                    <h3>Sharvil Wange</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/sharvil-wange-618b17290/" target="_blank">
+                            <img src="images\linkedin-logo.png" alt="LinkedIn logo">
+                        </a>
+                        <a href="https://github.com/Sharvilwange" target="_blank">
+                            <img src="images\github-logo.png" alt="GitHub logo">
+                        </a>
+                    </div>
+                </div>
+                <div class="team-card hidden">
+                    <div class="profile-pic">
+                        <img src="images\devendra.png">
+                    </div>
+                    <h3>Devendra Deshmukh</h3>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/devendra-deshmukh-7a330b320/" target="_blank">
+                            <img src="images\linkedin-logo.png" alt="LinkedIn logo">
+                        </a>
+                        <a href="https://github.com/Devendra0655" target="_blank">
+                            <img src="images\github-logo.png" alt="GitHub logo">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="static\js\main.js"></script>
+</body>
+</html>
