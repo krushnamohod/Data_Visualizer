@@ -11,11 +11,8 @@ Welcome to the **Visualization Dashboard**! This project provides an intuitive a
 
 2. **Data Visualization:**  
    - Generate visualizations such as histograms, line plots, correlation matrices, and more.  
-
-3. **Statistical Analysis:**  
-   - Perform calculations like mean, median, mode, and other insights directly on the dashboard.  
-
-4. **AI-Powered Assistance:**  
+ 
+3. **AI-Powered Assistance:**  
    - Integrated with Google Gemini AI for dataset insights and real-time explanations.  
 
 ---
