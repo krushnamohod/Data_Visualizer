@@ -1,4 +1,4 @@
-# 🌟 Visualization Dashboard 🌟  
+# 🌟 Knowledge Insight 🌟  
 
 Welcome to the **Visualization Dashboard**! This project provides an intuitive and professional platform for uploading datasets, performing data visualizations, conducting statistical analysis, and leveraging AI-powered insights.  
 
