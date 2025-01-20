@@ -195,7 +195,7 @@ h1 {
 }
 
 .logo::before {
-    content: " 𝕂𝕟𝕠𝕨𝕝𝕖𝕕𝕘𝕖 𝕚𝕟𝕤𝕚𝕘𝕙𝕥 ";
+    content: "  ";
     color: #261152;
     background: inherit;
     background-clip: text;
@@ -249,4 +249,74 @@ h1 {
     .team-grid {
         grid-template-columns: 1fr;
     }
+}
+/* ........................................................................................................ */
+
+.logo-container {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    transition: all 1s ease-in-out;
+    z-index: 1000;
+}
+
+.logo {
+    width: 280px; /* Optimal size for detailed logo */
+    height: auto; /* Maintain aspect ratio */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: logoEntrance 1.5s ease-out;
+}
+
+.logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: all 0.3s ease;
+}
+
+/* Updated animation for the moved state */
+.logo-container.moved {
+    width: auto;
+    height: auto;
+    top: 20px;
+    left: 20px;
+    background-color: transparent;
+}
+
+.logo.moved {
+    width: 50px; /* Smaller size when moved to corner */
+    height: auto;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+    transition: all 0.5s ease;
+}
+
+/* New entrance animation */
+@keyframes logoEntrance {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -60%);
+    }
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -48%);
+    }
+    100% {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+}
+
+/* Optional hover effect */
+.logo.moved:hover {
+    transform: scale(1.05);
 }

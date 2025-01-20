@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data to Insights</title>
-    <link rel="stylesheet" href="static\styles\main.css">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles/main.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
 </head>
 <body>
     <div class="logo-container">
-        <div class="logo"></div>
+        <div class="logo"><img src="{{ url_for('static', filename='images/apple-touch-icon.png') }}" alt="logo"></div>
     </div>
     <div class="main-content">
         <!-- Hero Section -->
@@ -111,6 +112,6 @@
             </div>
         </section>
     </div>
-    <script src="static\js\main.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>
