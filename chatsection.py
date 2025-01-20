@@ -93,10 +93,12 @@ class DataChatBot:
         # Generate content using the AI model
         response = self.model.generate_content(prompt)
         insight = response.text
-        
+
         # Add the assistant's response to chat history
-        self._add_to_history('assistant', 'Initial Dataset Analysis:\n' + insight)
-        return insight
+        formatted_insight = f"""**1. Brief Overview:**\n{insight}"""  # Apply bold formatting
+        self._add_to_history('assistant', 'Initial Dataset Analysis:\n' + formatted_insight)
+        return formatted_insight
+
 
     def process_query(self, query):
         """
@@ -133,10 +135,11 @@ class DataChatBot:
         # Generate content using the AI model
         response = self.model.generate_content(context)
         answer = response.text
-        
-        # Add the assistant's response to chat history
-        self._add_to_history('assistant', answer)
-        return answer
+
+        # Format and add the assistant's response to chat history
+        formatted_answer = f"""**Query:** {query}\n\n**Response:**\n{answer}"""
+        self._add_to_history('assistant', formatted_answer)
+        return formatted_answer
 
     def suggest_visualization(self, columns=None):
         """

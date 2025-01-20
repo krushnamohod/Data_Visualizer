@@ -21,6 +21,10 @@ def index():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/learn')
+def learn():
+    return render_template('learn.html')
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:

@@ -1,4 +1,4 @@
-// ChatInterface class to handle the chat functionality
+
 class ChatInterface {
     constructor() {
         // Get references to chat-related elements in the DOM
