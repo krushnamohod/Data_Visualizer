@@ -1,108 +1,151 @@
-
 class ChatInterface {
     constructor() {
-        // Get references to chat-related elements in the DOM
-        this.messagesContainer = document.getElementById('chat-messages'); // Container for chat messages
-        this.chatInput = document.getElementById('chat-input'); // Input field for user messages
-        this.sendButton = document.getElementById('send-message'); // Button to send messages
-        this.messageTemplate = document.getElementById('message-template'); // Template for rendering messages
+        this.messagesContainer = document.getElementById('ai-chat');
+        this.chatInput = document.getElementById('ai-input');
+        this.sendButton = document.getElementById('ai-submit');
         
-        // Initialize event listeners for user interactions
+        this.sendMessage = this.sendMessage.bind(this);
+        this.addMessage = this.addMessage.bind(this);
+        
         this.initializeEventListeners();
+        this.isLoading = false;
     }
 
-    // Set up event listeners for input and button
     initializeEventListeners() {
-        // Listen for the 'click' event on the send button
-        this.sendButton.addEventListener('click', () => this.sendMessage());
+        // Send button click handler
+        this.sendButton.addEventListener('click', async () => {
+            if (!this.isLoading) {
+                await this.sendMessage();
+            }
+        });
 
-        // Listen for the 'Enter' keypress on the input field to send messages
-        this.chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') this.sendMessage();
+        // Enter key press handler
+        this.chatInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && !e.shiftKey && !this.isLoading) {
+                e.preventDefault();
+                await this.sendMessage();
+            }
         });
     }
 
-    // Handle sending messages and receiving responses
+    setLoadingState(loading) {
+        this.isLoading = loading;
+        this.sendButton.disabled = loading;
+        this.chatInput.disabled = loading;
+        if (loading) {
+            this.sendButton.textContent = 'Sending...';
+        } else {
+            this.sendButton.textContent = 'Ask';
+        }
+    }
+
     async sendMessage() {
-        const message = this.chatInput.value.trim(); // Get the trimmed message input
-        if (!message) return; // Do nothing if the input is empty
-
-        // Clear the input field
-        this.chatInput.value = '';
-
-        // Add the user's message to the chat
-        this.addMessage('user', message);
+        const message = this.chatInput.value.trim();
+        if (!message) return;
 
         try {
-            // Make a POST request to the server with the user's message and dataset filename
-            const response = await fetch('/chat', {
+            this.setLoadingState(true);
+            
+            this.chatInput.value = '';
+            this.addMessage('user', message);
+
+            // Updated endpoint from /chat to /ai-query
+            const response = await fetch('/ai-query', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    query: message, // User's message
-                    filename: window.currentDataset // Dataset filename from the global variable
+                    query: message
                 })
             });
 
-            // Parse the server's response
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const data = await response.json();
+            
             if (data.success) {
-                // Add the assistant's response to the chat if successful
-                this.addMessage('assistant', data.response);
+                const formattedResponse = this.formatResponse(data.response);
+                this.addMessage('assistant', formattedResponse);
             } else {
-                // Show an error message if the response indicates failure
-                this.addMessage('assistant', 'Sorry, I encountered an error processing your request.');
+                const errorMessage = data.error || 'An unknown error occurred';
+                this.addMessage('assistant', `Error: ${errorMessage}`);
             }
         } catch (error) {
-            // Log the error and show an error message in the chat
             console.error('Chat error:', error);
-            this.addMessage('assistant', 'Sorry, there was an error processing your message.');
+            this.addMessage('assistant', 'Sorry, there was an error processing your message. Please try again.');
+        } finally {
+            this.setLoadingState(false);
+            this.scrollToBottom();
         }
     }
 
-    // Add a new message to the chat UI
+    formatResponse(response) {
+        // Convert markdown-style formatting to HTML
+        return response
+            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+            .replace(/\*(.*?)\*/g, '<em>$1</em>')
+            .replace(/\n/g, '<br>');
+    }
+
     addMessage(role, content) {
-        const messageNode = this.messageTemplate.content.cloneNode(true); // Clone the message template
-        const messageDiv = messageNode.querySelector('.message'); // Container for the message
-        const messageContent = messageNode.querySelector('.message-content'); // Content of the message
-        const messageIcon = messageNode.querySelector('.message-icon'); // Icon for the message sender
-        const messageTime = messageNode.querySelector('.message-time'); // Timestamp for the message
+        // Create message container
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `flex ${role === 'user' ? 'justify-end' : 'justify-start'} mb-4`;
 
-        // Style the message differently based on the role (user or assistant)
-        if (role === 'user') {
-            messageDiv.classList.add('justify-end'); // Align the message to the right
-            messageContent.classList.add('bg-blue-100'); // Apply user-specific styling
-            messageIcon.textContent = 'U'; // Set the icon to 'U' for user
-        } else {
-            messageContent.classList.add('bg-gray-100'); // Apply assistant-specific styling
-            messageIcon.textContent = 'AI'; // Set the icon to 'AI' for assistant
-        }
+        // Create message content
+        const messageContent = document.createElement('div');
+        messageContent.className = `max-w-[80%] rounded-lg p-3 ${
+            role === 'user' ? 'bg-blue-100' : 'bg-gray-100'
+        }`;
+        messageContent.innerHTML = content;
 
-        // Set the message content and timestamp
-        messageContent.textContent = content; // Add the actual message content
-        messageTime.textContent = new Date().toLocaleTimeString(); // Add the current time as a timestamp
+        // Create timestamp
+        const timestamp = document.createElement('div');
+        timestamp.className = 'text-xs text-gray-500 mt-1';
+        timestamp.textContent = new Date().toLocaleTimeString();
 
-        // Append the message to the chat container
-        this.messagesContainer.appendChild(messageNode);
+        // Assemble message
+        const messageWrapper = document.createElement('div');
+        messageWrapper.className = 'flex flex-col';
+        messageWrapper.appendChild(messageContent);
+        messageWrapper.appendChild(timestamp);
+        messageDiv.appendChild(messageWrapper);
 
-        // Automatically scroll to the bottom of the chat
+        // Add to chat container
+        this.messagesContainer.appendChild(messageDiv);
         this.scrollToBottom();
     }
 
-    // Ensure the chat container is scrolled to the latest message
     scrollToBottom() {
-        this.messagesContainer.scrollTop = this.messagesContainer.scrollHeight;
+        // Smooth scroll to bottom
+        this.messagesContainer.scrollTo({
+            top: this.messagesContainer.scrollHeight,
+            behavior: 'smooth'
+        });
     }
 
-    // Display initial insights or system messages in the chat
     displayInitialInsights(insights) {
-        this.addMessage('assistant', insights); // Add the insights as an assistant message
+        if (insights) {
+            const formattedInsights = this.formatResponse(insights);
+            this.addMessage('assistant', formattedInsights);
+        }
+    }
+
+    clearChat() {
+        while (this.messagesContainer.firstChild) {
+            this.messagesContainer.removeChild(this.messagesContainer.firstChild);
+        }
+    }
+
+    displayError(error) {
+        const errorMessage = typeof error === 'string' ? error : 'An error occurred';
+        this.addMessage('assistant', `<span class="text-red-500">${errorMessage}</span>`);
     }
 }
 
-// Initialize the ChatInterface class when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    window.chatInterface = new ChatInterface(); // Create a global instance of the chat interface
+    window.chatInterface = new ChatInterface();
 });

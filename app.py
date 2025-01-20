@@ -134,27 +134,41 @@ def get_statistics():
 
     return jsonify({'success': True, 'statistics': stats})
 
-@app.route('/chat', methods=['POST'])
-def chat_query():
-    data = request.json
-    query = data['query']
+@app.route('/ai-query', methods=['POST'])
+def ai_query():
+    try:
+        data = request.json
+        if not data or 'query' not in data:
+            return jsonify({'error': 'No query provided'}), 400
 
-    # Load the most recent dataset from the upload folder
-    uploaded_files = os.listdir(app.config['UPLOAD_FOLDER'])
-    if not uploaded_files:
-        return jsonify({'error': 'No dataset available for chat analysis'}), 400
+        query = data['query']
 
-    latest_file = max(
-        [os.path.join(app.config['UPLOAD_FOLDER'], f) for f in uploaded_files],
-        key=os.path.getctime
-    )
+        # Load the most recent dataset
+        uploaded_files = os.listdir(app.config['UPLOAD_FOLDER'])
+        if not uploaded_files:
+            return jsonify({'error': 'No dataset available'}), 400
 
-    df = pd.read_csv(latest_file)
-    analyzer = DataAnalyzer(df)
-    df_summary = analyzer.get_basic_stats().to_string()
+        latest_file = max(
+            [os.path.join(app.config['UPLOAD_FOLDER'], f) for f in uploaded_files],
+            key=os.path.getctime
+        )
 
-    response = chatbot.process_query(query, df_summary)
-    return jsonify({'success': True, 'response': response})
+        df = pd.read_csv(latest_file)
+        analyzer = DataAnalyzer(df)
+        df_summary = analyzer.get_basic_stats().to_string()
+
+        # Process the query and get response
+        response = chatbot.process_query(query, df_summary)
+        
+        return jsonify({
+            'success': True,
+            'response': response
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)

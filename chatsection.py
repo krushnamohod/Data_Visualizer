@@ -7,22 +7,15 @@ from datetime import datetime
 load_dotenv()
 
 class DataChatBot:
-    """
-    A chatbot designed to assist with data analysis. It uses Google Generative AI to process 
-    queries and provide insights based on a dataset.
-    """
-
     def __init__(self):
-        # Fetch the Google API key from environment variables
         api_key = os.getenv('GOOGLE_API_KEY')
         if not api_key:
             raise ValueError("Google API key not found in environment variables")
         
-        # Configure the generative AI model with the API key
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')  # Specify the model to use
-        self.dataset_info = None  # Placeholder for dataset information
-        self.chat_history = []  # List to store chat history
+        self.model = genai.GenerativeModel('gemini-pro')
+        self.dataset_info = None
+        self.chat_history = []
 
     def set_dataset_info(self, df):
         """
@@ -100,12 +93,13 @@ class DataChatBot:
         return formatted_insight
 
 
-    def process_query(self, query):
+    def process_query(self, query, df_summary):
         """
         Process a user query related to the dataset and return a response.
         
         Args:
             query (str): The user's question or request.
+            df_summary (str): Summary statistics of the dataset
         
         Returns:
             str: AI-generated response to the user's query.
@@ -113,11 +107,10 @@ class DataChatBot:
         if not self.dataset_info:
             return "Please upload a dataset first."
 
-        # Add the user's query to the chat history
         self._add_to_history('user', query)
 
-        # Construct a prompt with the dataset context and user query
-        context = f"""You are a data analysis assistant helping with a dataset that has the following structure:
+        context = f"""You are a data analysis assistant. Here is the dataset summary:
+        {df_summary}
         
         Dataset Info:
         - Dimensions: {self.dataset_info['shape']}
@@ -126,20 +119,23 @@ class DataChatBot:
         
         User Query: {query}
         
-        Provide a helpful response that:
+        Please provide a clear and helpful response that:
         1. Directly addresses the user's question
-        2. Suggests relevant visualizations or analyses when applicable
-        3. Uses the actual column names from the dataset
+        2. References specific statistics from the dataset summary when relevant
+        3. Suggests relevant visualizations or analyses when applicable
         """
 
-        # Generate content using the AI model
-        response = self.model.generate_content(context)
-        answer = response.text
-
-        # Format and add the assistant's response to chat history
-        formatted_answer = f"""**Query:** {query}\n\n**Response:**\n{answer}"""
-        self._add_to_history('assistant', formatted_answer)
-        return formatted_answer
+        try:
+            response = self.model.generate_content(context)
+            answer = response.text
+            
+            formatted_answer = f"**Response:** {answer}"
+            self._add_to_history('assistant', formatted_answer)
+            return formatted_answer
+        except Exception as e:
+            error_msg = f"Error generating response: {str(e)}"
+            self._add_to_history('assistant', error_msg)
+            return error_msg
 
     def suggest_visualization(self, columns=None):
         """
