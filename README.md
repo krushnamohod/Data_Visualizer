@@ -3,6 +3,9 @@
 Welcome to the **Visualization Dashboard**! This project provides an intuitive and professional platform for uploading datasets, performing data visualizations, conducting statistical analysis, and leveraging AI-powered insights.  
 
 ---
+## 🧐Problem Statement
+![Problem statement](https://github.com/krushnamohod/Data_Visualizer/blob/main/static/images/problem_statement.png)
+---
 
 ## 🚀 **Features**  
 
