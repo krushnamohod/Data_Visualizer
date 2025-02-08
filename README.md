@@ -23,14 +23,23 @@ Welcome to the **Visualization Dashboard**! This project provides an intuitive a
 Clone this repository to your local machine:  
 ```bash  
 git clone https://github.com/krushnamohod/Data_Visualizer.git  
-cd visualization-dashboard
+cd Data_Visualizer
 ```
 ### Create virtual environment 
-paste in your command line
+For Windows
 ```bash
-python -m venv venv  
-source venv/bin/activate  # On Linux/Mac  
-venv\Scripts\activate     # On Windows  
+python -m venv venv
+venv\Scripts\activate
+```
+For Linux
+```bash
+python -m venv venv
+source venv/bin/activate
+```
+For MacOS
+```bash
+python3 -m venv venv
+source venv/bin/activate
 ```
 ### Install Dependencies
 paste in your command line 
@@ -113,3 +122,4 @@ Feel free to star 🌟 this repository and provide feedback or suggestions!
 Let me know if there’s anything else you’d like to change! 🚀
 ```   
 ---
+<!-- ![alt text](https://github.com/krushnamohod/Data_Visualizer/blob/main/static/images/krushna.png?raw=true) -->
