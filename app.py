@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 import pandas as pd
 import os
-from visualize import DataVisualizer
-from chatsection import DataChatBot
-from statisticsanalysis import DataAnalyzer
+from src.visualize import DataVisualizer
+from src.chatsection import DataChatBot
+from src.statisticsanalysis import DataAnalyzer
 
 app = Flask(__name__)
-app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 100MB max file size
+app.config['MAX_CONTENT_LENGTH'] = 200 * 1024 * 1024  # 200MB max file size
 app.config['UPLOAD_FOLDER'] = 'uploads'
 
 # Initialize chatbot

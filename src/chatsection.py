@@ -13,7 +13,7 @@ class DataChatBot:
             raise ValueError("Google API key not found in environment variables")
         
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel('gemini-pro')
+        self.model = genai.GenerativeModel('gemini-2.0-flash')
         self.dataset_info = None
         self.chat_history = []
 
